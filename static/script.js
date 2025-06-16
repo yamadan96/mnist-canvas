@@ -98,11 +98,15 @@ async function predict() {
   document.getElementById('resultContainer').style.display = 'none';
   
   try {
+    const apiUrl = location.hostname === "localhost"
+      ? "http://localhost:8000/predict"
+      : "https://mnist-canvas.onrender.com/predict";
+
     canvas.toBlob(async blob => {
       const form = new FormData();
       form.append("file", blob, "image.png");
       
-      const res = await fetch("http://localhost:8000/predict", {
+      const res = await fetch(apiUrl, {
         method: "POST",
         body: form
       });
