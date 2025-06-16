@@ -18,6 +18,10 @@
 - Docker
 - Render（PaaSホスティング）
 
+## デモ画面（イメージ）
+
+![mnist-canvas-demo](docs/demo.png)
+
 ## 使い方（ローカル実行）
 
 ```bash
@@ -32,7 +36,7 @@ docker run -p 8000:8000 mnist-app
 
 ## 公開URL
 
-Renderにてデプロイ済み（後日追加予定）
+[mnist-canvas Webアプリ (Render公開)](https://mnist-canvas.onrender.com)
 
 ## 作者
 
