@@ -102,33 +102,31 @@ async function predict() {
       ? "http://localhost:8000/predict"
       : "https://mnist-canvas.onrender.com/predict";
 
-    canvas.toBlob(async blob => {
-      const form = new FormData();
-      form.append("file", blob, "image.png");
-      
-      const res = await fetch(apiUrl, {
-        method: "POST",
-        body: form
-      });
-      
-      const data = await res.json();
-      
-      // ローディング非表示
-      document.getElementById('loading').style.display = 'none';
-      
-      // 結果表示
-      document.getElementById('resultValue').innerText = data.prediction;
-      document.getElementById('confidence').innerText = `信頼度: ${(data.confidence * 100).toFixed(1)}%`;
-      document.getElementById('resultContainer').style.display = 'block';
-      
-      // 結果に応じてアニメーション
-      const resultValue = document.getElementById('resultValue');
-      resultValue.style.transform = 'scale(1.2)';
-      setTimeout(() => {
-        resultValue.style.transform = 'scale(1)';
-      }, 200);
-      
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+    const form = new FormData();
+    form.append("file", blob, "image.png");
+
+    const res = await fetch(apiUrl, {
+      method: "POST",
+      body: form
     });
+
+    const data = await res.json();
+
+    // ローディング非表示
+    document.getElementById('loading').style.display = 'none';
+
+    // 結果表示
+    document.getElementById('resultValue').innerText = data.prediction;
+    document.getElementById('confidence').innerText = `信頼度: ${(data.confidence * 100).toFixed(1)}%`;
+    document.getElementById('resultContainer').style.display = 'block';
+
+    // 結果に応じてアニメーション
+    const resultValue = document.getElementById('resultValue');
+    resultValue.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+      resultValue.style.transform = 'scale(1)';
+    }, 200);
   } catch (error) {
     document.getElementById('loading').style.display = 'none';
     alert('予測中にエラーが発生しました。もう一度お試しください。');
